@@ -11,7 +11,8 @@ public class Livro
 
     }
 
-    public String getano() {
+    public String getAno() {
+
         return titulo;
     }
     public void setAno(int ano) {
@@ -24,6 +25,7 @@ public class Livro
     }
 
     public String getTitulo() {
+
         return titulo;
     }
     public void setTitulo(String titulo) {
@@ -36,6 +38,7 @@ public class Livro
     }
 
     public String getAutor() {
+
         return autor;
     }
     public void setAutor(String autor) {
