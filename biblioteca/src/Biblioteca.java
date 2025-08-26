@@ -23,6 +23,15 @@ public class Biblioteca{
         System.out.println("Usuario "+ usuario.getUser() + " adicionado no acervo");
     }
 
+    public Livro pesquisarPorTitulo(String titulo){
+        for ( Livro l : this.acervo){
+            if(l.getTitulo().equalsIgnoreCase(titulo)) {
+                return l ;
+            }
+        }
+        return null;
+    }
+
     public static void main(String[] args){
         Biblioteca biblioteca = new Biblioteca();
         Livro l = new Livro("como programar", "kinha",2024);
