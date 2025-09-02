@@ -3,11 +3,13 @@ public class Livro
     private String titulo;
     private String autor;
     private int ano;
+    private StatusLivro status;
 
     public Livro(String titulo, String autor, int ano) {
         setTitulo(titulo);
         setAutor(autor);
         setAno(ano);
+        this.status = StatusLivro.DISPONIVEL;
 
     }
 
@@ -52,10 +54,15 @@ public class Livro
 
     @Override
     public String toString() {
-        return "Livro{" +
-                "titulo='" + titulo + '\'' +
-                ", autor='" + autor + '\'' +
-                ", ano=" + ano +
-                '}';
+        return "Livro '" + titulo + "', de " + autor + " (" + ano + ") - Status: " + status;
     }
+
+    public StatusLivro getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusLivro status) {
+        this.status = status;
+    }
+
 }
