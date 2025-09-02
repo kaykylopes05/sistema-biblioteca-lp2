@@ -4,11 +4,13 @@ public class Emprestimo {
     private Livro livro;
     private Usuario usuario;
     private LocalDate dataEmprestimo;
+    private LocalDate dataDevolucaoPrevista;
 
-    public Emprestimo(Livro livro, Usuario usuario, LocalDate dataEmprestimo) {
+    public Emprestimo(Livro livro, Usuario usuario, LocalDate dataEmprestimo, LocalDate dataDevolucaoPrevista) {
         this.livro = livro;
         this.usuario = usuario;
         this.dataEmprestimo = dataEmprestimo;
+        this.dataDevolucaoPrevista = dataDevolucaoPrevista;
     }
 
     public Livro getLivro() {
@@ -33,5 +35,19 @@ public class Emprestimo {
 
     public void setDataEmprestimo(LocalDate dataEmprestimo) {
         this.dataEmprestimo = dataEmprestimo;
+    }
+
+    public LocalDate getDataDevolucaoPrevista() {
+        return dataDevolucaoPrevista;
+    }
+
+    @Override
+    public String toString() {
+        return "Emprestimo{" +
+                "livro=" + livro.getTitulo() +
+                ", usuario=" + usuario.getName() +
+                ", dataEmprestimo=" + dataEmprestimo +
+                ", dataDevolucaoPrevista=" + dataDevolucaoPrevista +
+                '}';
     }
 }
