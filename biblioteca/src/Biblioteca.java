@@ -6,7 +6,7 @@ import javax.swing.*;
 
 public class Biblioteca{
 
-    private List<Livro> acervo;
+    private List<ItemDoAcervo> acervo;
     private List<Usuario> listaUsuarios;
     private List<Emprestimo> registroDeEmprestimos;
     private static final int PRAZO_EMPRESTIMOS_DIAS = 14;
@@ -27,7 +27,7 @@ public class Biblioteca{
             System.out.println("Erro: esse usuário não está cadastrado.");
             return;
         }
-        Livro livroDoEmprestimo = pesquisarLivroPorTitulo(titulo);
+        ItemDoAcervo livroDoEmprestimo = pesquisarLivroPorTitulo(titulo);
         if (livroDoEmprestimo == null) {
             System.out.println("Erro: esse livro não está cadastrado.");
             return;
@@ -46,9 +46,9 @@ public class Biblioteca{
         System.out.println("Emprestimo cadastrado com sucesso.");
         System.out.println( "O livro " + livroDoEmprestimo.getTitulo() + " foi emprestado para o usuario " + usuarioDoEmprestimo.getName() + " na data " + emprestimo.getDataEmprestimo() + " e a data de devolução é " + emprestimo.getDataDevolucaoPrevista() );
     }
-    public void cadastrarLivro(Livro livro){
-        acervo.add(livro);
-        System.out.println("Livro "+ livro.getTitulo() + " adicionado no acervo");
+    public void cadastrarItem(ItemDoAcervo item){
+        this.acervo.add(item);
+        System.out.println("Livro "+ item.getTitulo() + " adicionado no acervo");
     }
 
     public void cadastrarUsuario(Usuario usuario){
@@ -56,10 +56,10 @@ public class Biblioteca{
         System.out.println("Usuario "+ usuario.getUser() + " adicionado no acervo");
     }
 
-    public Livro pesquisarLivroPorTitulo(String titulo){
-        for ( Livro l : this.acervo){
-            if(l.getTitulo().equalsIgnoreCase(titulo)) {
-                return l ;
+    public ItemDoAcervo pesquisarLivroPorTitulo(String titulo){
+        for ( ItemDoAcervo item : this.acervo){
+            if(item.getTitulo().equalsIgnoreCase(titulo)) {
+                return item ;
             }
         }
         return null;
@@ -73,11 +73,11 @@ public class Biblioteca{
         }
         return null;
     }
-    public List<Livro> pesquisarLivroPorTermo(String termo) {
-        List<Livro> listaDeLivros = new ArrayList<>();
-        for (var livro : acervo) {
-            if(livro.getTitulo().toLowerCase().contains(termo.toLowerCase())) {
-                listaDeLivros.add(livro);
+    public List<ItemDoAcervo> pesquisarLivroPorTermo(String termo) {
+        List<ItemDoAcervo> listaDeLivros = new ArrayList<>();
+        for (var item : acervo) {
+            if(item.getTitulo().toLowerCase().contains(termo.toLowerCase())) {
+                listaDeLivros.add(item);
             }
         }
         return listaDeLivros;
@@ -85,14 +85,14 @@ public class Biblioteca{
 
     public void listarAcervo() {
         System.out.println("Livros no Acervo");
-        for (Livro livro : acervo) {
-            System.out.println(livro);
+        for (ItemDoAcervo item : acervo) {
+            System.out.println(item);
         }
     }
 
     private Emprestimo buscarEmprestimoAtivoPorLivro(Livro livro){
         for (var emprestimo : registroDeEmprestimos) {
-            if(emprestimo.getLivro().getTitulo().equalsIgnoreCase(livro.getTitulo())) {
+            if(emprestimo.getItem().getTitulo().equalsIgnoreCase(livro.getTitulo())) {
                 System.out.println(livro.getStatus());
                 return emprestimo;
             }
@@ -105,12 +105,15 @@ public class Biblioteca{
         Livro livroMemoria = new Livro("Memórias Póstumas de Brás Cubas", "Machado de Assis", 1881);
         Usuario meuUsuario = new Usuario("Thiago", "Thiago Carvalho", "123");
         Biblioteca minhaBiblioteca = new Biblioteca();
-        minhaBiblioteca.cadastrarLivro(livroJavaComoProgramar);
-        minhaBiblioteca.cadastrarLivro(livroMemoria);
+        minhaBiblioteca.cadastrarItem(livroJavaComoProgramar);
+        minhaBiblioteca.cadastrarItem(livroMemoria);
         minhaBiblioteca.cadastrarUsuario(meuUsuario);
         minhaBiblioteca.listarAcervo();
         minhaBiblioteca.realizarEmprestimo("Thiago", "Memórias Póstumas de Brás Cubas");
         minhaBiblioteca.buscarEmprestimoAtivoPorLivro(livroMemoria);
+        Revista revistaveja = new Revista("veja",2024 ,1 );
+        System.out.println(revistaveja);
+        System.out.println(livroJavaComoProgramar);
 
 
     }
