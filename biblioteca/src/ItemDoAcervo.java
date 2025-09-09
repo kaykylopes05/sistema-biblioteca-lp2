@@ -44,4 +44,18 @@ public class ItemDoAcervo {
         this.status = StatusLivro.DISPONIVEL;
     }
 
+    public int getPrazo(){
+        return 07;
+    }
+
+    public double getValorMultaPorDiaAtraso(){
+        return 0.50;
+    }
+
+
+
+
+
+
+
 }

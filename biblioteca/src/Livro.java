@@ -21,6 +21,16 @@ public class Livro extends ItemDoAcervo {
         }
     }
 
+    @Override
+    public int getPrazo(){
+        return 14;
+    }
+
+    @Override
+    public double getValorMultaPorDiaAtraso(){
+        return 0.75;
+    }
+
 
     @Override
     public String toString() {

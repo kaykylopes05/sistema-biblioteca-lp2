@@ -40,6 +40,9 @@ public class Emprestimo {
     public LocalDate getDataDevolucaoPrevista() {
         return dataDevolucaoPrevista;
     }
+    public void setDataDevolucaoPrevista(LocalDate dataDevolucaoPrevista) {
+        this.dataDevolucaoPrevista = dataDevolucaoPrevista;
+    }
 
     @Override
     public String toString() {

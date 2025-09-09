@@ -7,6 +7,15 @@ public class Revista extends ItemDoAcervo{
         this.edicao = edicao;
 
     }
+    @Override
+    public int getPrazo(){
+        return 07;
+    }
+
+    @Override
+    public double getValorMultaPorDiaAtraso(){
+        return 1.00;
+    }
 
     @Override
     public String toString() {

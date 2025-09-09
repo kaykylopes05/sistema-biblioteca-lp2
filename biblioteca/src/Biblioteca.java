@@ -9,8 +9,7 @@ public class Biblioteca{
     private List<ItemDoAcervo> acervo;
     private List<Usuario> listaUsuarios;
     private List<Emprestimo> registroDeEmprestimos;
-    private static final int PRAZO_EMPRESTIMOS_DIAS = 14;
-    private static final double VALOR_MULTA_POR_DIA = 0.75;
+
 
 
     public Biblioteca(){
@@ -27,7 +26,7 @@ public class Biblioteca{
             System.out.println("Erro: esse usuário não está cadastrado.");
             return;
         }
-        ItemDoAcervo livroDoEmprestimo = pesquisarLivroPorTitulo(titulo);
+        ItemDoAcervo livroDoEmprestimo = pesquisarItemPorTitulo(titulo);
         if (livroDoEmprestimo == null) {
             System.out.println("Erro: esse livro não está cadastrado.");
             return;
@@ -38,7 +37,7 @@ public class Biblioteca{
         }
 
         LocalDate hoje = LocalDate.now();
-        LocalDate devolucaoPrevista = hoje.plusDays(PRAZO_EMPRESTIMOS_DIAS);
+        LocalDate devolucaoPrevista = hoje.plusDays(livroDoEmprestimo.getPrazo());
 
         livroDoEmprestimo.setStatus(StatusLivro.EMPRESTADO);
         Emprestimo emprestimo = new Emprestimo(livroDoEmprestimo, usuarioDoEmprestimo, hoje, devolucaoPrevista );
@@ -56,7 +55,7 @@ public class Biblioteca{
         System.out.println("Usuario "+ usuario.getUser() + " adicionado no acervo");
     }
 
-    public ItemDoAcervo pesquisarLivroPorTitulo(String titulo){
+    public ItemDoAcervo pesquisarItemPorTitulo(String titulo){
         for ( ItemDoAcervo item : this.acervo){
             if(item.getTitulo().equalsIgnoreCase(titulo)) {
                 return item ;
@@ -73,7 +72,7 @@ public class Biblioteca{
         }
         return null;
     }
-    public List<ItemDoAcervo> pesquisarLivroPorTermo(String termo) {
+    public List<ItemDoAcervo> pesquisarItemPorTermo(String termo) {
         List<ItemDoAcervo> listaDeLivros = new ArrayList<>();
         for (var item : acervo) {
             if(item.getTitulo().toLowerCase().contains(termo.toLowerCase())) {
@@ -90,14 +89,38 @@ public class Biblioteca{
         }
     }
 
-    private Emprestimo buscarEmprestimoAtivoPorLivro(Livro livro){
+    private Emprestimo buscarEmprestimoAtivoPorItem(ItemDoAcervo item){
         for (var emprestimo : registroDeEmprestimos) {
-            if(emprestimo.getItem().getTitulo().equalsIgnoreCase(livro.getTitulo())) {
-                System.out.println(livro.getStatus());
+            if(emprestimo.getItem().getTitulo().equalsIgnoreCase(item.getTitulo())) {
+                System.out.println(item.getStatus());
                 return emprestimo;
             }
         }
         return null;
+    }
+
+    public void realizarDevolucao(String titulo) {
+        ItemDoAcervo item = pesquisarItemPorTitulo(titulo);
+        if(item == null) {
+            System.out.println("Erro: esse item não está cadastrado.");
+            return;
+        }
+        Emprestimo emprestimo = buscarEmprestimoAtivoPorItem(item);
+        if(emprestimo == null) {
+            System.out.println("Erro: esse emprestimo não existe.");
+            return;
+        }
+        LocalDate hoje = LocalDate.now();
+        long dias = ChronoUnit.DAYS.between(emprestimo.getDataDevolucaoPrevista(), hoje);
+
+        if(dias > 0) {
+            double multa = dias * item.getValorMultaPorDiaAtraso();
+            System.out.println("Item devolvido. Você precisa pagar uma multa de R$" + multa);
+        } else {
+            System.out.println("Item devolvido.");
+        }
+        emprestimo.getItem()    .setStatus(StatusLivro.DISPONIVEL);
+        emprestimo.setDataDevolucaoPrevista(hoje);
     }
 
     public static void main(String[] args) {
@@ -110,7 +133,7 @@ public class Biblioteca{
         minhaBiblioteca.cadastrarUsuario(meuUsuario);
         minhaBiblioteca.listarAcervo();
         minhaBiblioteca.realizarEmprestimo("Thiago", "Memórias Póstumas de Brás Cubas");
-        minhaBiblioteca.buscarEmprestimoAtivoPorLivro(livroMemoria);
+        minhaBiblioteca.buscarEmprestimoAtivoPorItem(livroMemoria);
         Revista revistaveja = new Revista("veja",2024 ,1 );
         System.out.println(revistaveja);
         System.out.println(livroJavaComoProgramar);
