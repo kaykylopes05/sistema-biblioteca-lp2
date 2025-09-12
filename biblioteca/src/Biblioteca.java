@@ -4,8 +4,10 @@ import java.util.List;
 import java.time.LocalDate;
 import javax.swing.*;
 
-public class Biblioteca{
 
+// não faz sentido, precisa ser algo mais especifico.  pois as classes ( livros, revista) herdam de ItemdoAcervo  as caracteristicas titulo e ano, e para especificar elas precisam adicionar mais duas caracteristicas(parametros), que no caso do livro é o autor, e no caso da revista é a edicao. entao sempre é melhor especificar, para que nao haja erro
+public class Biblioteca{
+    public String AutorDoLivro;
     private List<ItemDoAcervo> acervo;
     private List<Usuario> listaUsuarios;
     private List<Emprestimo> registroDeEmprestimos;
@@ -110,7 +112,7 @@ public class Biblioteca{
             System.out.println("Erro: esse emprestimo não existe.");
             return;
         }
-        LocalDate hoje = LocalDate.now();
+        LocalDate hoje = LocalDate.now().plusDays(8); // 3 dias de prazo + 5 dias de atraso, por isso o numero 8.
         long dias = ChronoUnit.DAYS.between(emprestimo.getDataDevolucaoPrevista(), hoje);
 
         if(dias > 0) {
@@ -119,9 +121,37 @@ public class Biblioteca{
         } else {
             System.out.println("Item devolvido.");
         }
-        emprestimo.getItem()    .setStatus(StatusLivro.DISPONIVEL);
+        emprestimo.getItem().setStatus(StatusLivro.DISPONIVEL);
         emprestimo.setDataDevolucaoPrevista(hoje);
     }
+
+    public List<ItemDoAcervo> buscar(String termo) {
+
+        List<ItemDoAcervo> resultados = new ArrayList<>();
+
+        String termoMinusculo = termo.toLowerCase();
+
+        for (ItemDoAcervo item : acervo) {
+
+            boolean tituloContem = item.getTitulo().toLowerCase().contains(termoMinusculo);
+
+
+            boolean autorContem = false;
+            if (item instanceof Livro) {
+                Livro livro = (Livro) item;
+                autorContem = livro.getAutor().toLowerCase().contains(termoMinusculo);
+            }
+
+
+            if (tituloContem || autorContem) {
+                resultados.add(item);
+            }
+        }
+        return resultados;
+
+    }
+
+
 
     public static void main(String[] args) {
         Livro livroJavaComoProgramar = new Livro("Java Como Programar", "Deitel", 2014);
@@ -137,6 +167,32 @@ public class Biblioteca{
         Revista revistaveja = new Revista("veja",2024 ,1 );
         System.out.println(revistaveja);
         System.out.println(livroJavaComoProgramar);
+        DVD Barbie = new DVD("Barbie" ,2025,60);
+        minhaBiblioteca.cadastrarItem(Barbie);
+        minhaBiblioteca.listarAcervo();
+        minhaBiblioteca.realizarEmprestimo("Thiago", "Barbie");
+        minhaBiblioteca.realizarDevolucao("Barbie");
+        minhaBiblioteca.listarAcervo();
+        Livro Tolkien = new Livro("Tolkien", "thiago", 2014);
+        minhaBiblioteca.cadastrarItem(Tolkien);
+        Livro livroSenhorDosAneis = new Livro("O Senhor dos Anéis", "J.R.R. Tolkien", 1954);
+        Livro livroHobbit = new Livro("O Hobbit", "J.R.R. Tolkien", 1937);
+        Livro livroJavaAvancado = new Livro("Java Avançado", "Deitel", 2018);
+        minhaBiblioteca.cadastrarItem(livroJavaAvancado);
+        minhaBiblioteca.cadastrarItem(livroHobbit);
+        minhaBiblioteca.cadastrarItem(livroSenhorDosAneis);
+        List<ItemDoAcervo> resultadosTolkien = minhaBiblioteca.buscar("Tolkien");
+
+        System.out.println("--------------------------");
+        for (ItemDoAcervo item : resultadosTolkien) {
+            System.out.println(item);
+        }
+
+
+
+
+
+
 
 
     }
